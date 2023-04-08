@@ -203,23 +203,21 @@ def user_stats(df):
 
 def display_data(df):
     """
-    Displays raw data upon request from user.
-    Args:
-    (df) df - Pandas DataFrame containing city data filtered by month and day
-    Returns:
-        None
+    Displays five rows of data at a time, and asks the user if they want to see more.
     """
-    start = 0
-    end = 5
-    display_raw_data = input("Would you like to see 5 lines of raw data? (yes or no)").lower()
-    
+
     i = 0
+    df_default = df.iloc[np.arange(0+i,5+i)]
+    print(tabulate(df_default, headers ="keys"))
+
     while True:
-        display_data = input('\nWould you like to see 5 lines of raw data? Enter yes or no.\n')
-        if display_data.lower() != 'yes':
+        see_more = input('\nDo you want to see more data? Enter yes or no.\n').lower()
+        if see_more != 'yes':
             break
-        print(tabulate(df_default.iloc[np.arange(0+i,5+i)], headers ="keys"))
         i += 5
+        df_default = df.iloc[np.arange(0+i,5+i)]
+        print(tabulate(df_default, headers ="keys"))
+
 
 def main():
     while True:
