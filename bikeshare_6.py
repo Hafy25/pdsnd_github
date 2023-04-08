@@ -21,7 +21,7 @@ def get_filters():
         if city.lower() in CITY_DATA.keys():
             break
         else:
-            print("Invalid input. Please enter one of the three cities specified.")
+            print("The input you have entered is not valid. Please enter one of the three cities that have been specified.")
 
 
     while True:
@@ -29,7 +29,7 @@ def get_filters():
         if month.lower() in ['january', 'february', 'march', 'april', 'may', 'june', 'all']:
             break
         else:
-            print("Invalid input. Please enter a valid month or 'all'.")
+            print("The input provided is not valid. Kindly input a valid month or type 'all'.")
 
 
 
@@ -38,7 +38,7 @@ def get_filters():
         if day.lower() in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']:
             break
         else:
-            print("Invalid input. Please enter a valid day of the week or 'all'.")
+            print("The input you have provided is not valid. Please enter a valid day of the week, or enter 'all'.")
 
 
     print('-'*40)
