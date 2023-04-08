@@ -1,12 +1,40 @@
 import time
 import pandas as pd
 import numpy as np
+from tabulate import tabulate
+
 
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
-def get_filters():
+def check_data_entry(prompt, valid_entries): 
+    """
+    Asks user to type some input and verify if the entry typed is valid.
+    Since we have 3 inputs to ask the user in get_filters(), it is easier to write a function.
+    Args:
+        (str) prompt - message to display to the user
+        (list) valid_entries - list of string that should be accepted 
+    Returns:
+        (str) user_input - the user's valid input
+    """
+    try:
+        user_input = str(input(prompt)).lower()
+
+        while user_input not in valid_entries : 
+            print('Sorry... it seems like you\'re not typing a correct entry.')
+            print('Let\'s try again!')
+            user_input = str(input(prompt)).lower()
+
+        print('Great! the chosen entry is: {}\n'.format(user_input))
+        return user_input
+
+    except:
+        print('Seems like there is an issue with your input')
+
+
+
+def get_filters(): 
     """
     Asks user to specify a city, month, and day to analyze.
 
@@ -23,6 +51,7 @@ def get_filters():
         else:
             print("The input you have entered is not valid. Please enter one of the three cities that have been specified.")
 
+    print('Hi there! Let\'s explore some US bikeshare data!')
 
     while True:
         month = input("Please enter a month (January, February, March, April, May, June), or type 'all' for all months: ")
@@ -32,6 +61,10 @@ def get_filters():
             print("The input provided is not valid. Kindly input a valid month or type 'all'.")
 
 
+    # get user input for month (all, january, february, ... , june)
+    valid_months = ['all','january','february','march','april','may','june']
+    prompt_month = 'Please choose a month (all, january, february, ... , june): '
+    month = check_data_entry(prompt_month, valid_months)
 
     while True:
         day = input("Please enter a day of the week (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), or type 'all' for all days: ")
@@ -42,7 +75,7 @@ def get_filters():
 
 
     print('-'*40)
-    return city.lower(), month.lower(), day.lower()
+    return city, month, day
 
 
 def load_data(city, month, day):
@@ -181,24 +214,21 @@ def user_stats(df):
 
 def display_data(df):
     """
-    Displays raw data upon request from user.
-    Args:
-    (df) df - Pandas DataFrame containing city data filtered by month and day
-    Returns:
-        None
+    Displays five rows of data at a time, and asks the user if they want to see more.
     """
-    start = 0
-    end = 5
-    display_raw_data = input("Would you like to see 5 lines of raw data? (yes or no)").lower()
+
+    i = 0
+    df_default = df.iloc[np.arange(0+i,5+i)]
+    print(tabulate(df_default, headers ="keys"))
 
     while True:
-        if display_raw_data == "yes":
-            print(df.iloc[start:end])
-            start += 5
-            end += 5
-            display_raw_data = input("Would you like to see more raw data? (yes or no)").lower()
-        else:
+        see_more = input('\nDo you want to see more data? Enter yes or no.\n').lower()
+        if see_more != 'yes':
             break
+        i += 5
+        df_default = df.iloc[np.arange(0+i,5+i)]
+        print(tabulate(df_default, headers ="keys"))
+
 
 def main():
     while True:
