@@ -1,6 +1,8 @@
 import time
 import pandas as pd
 import numpy as np
+from tabulate import tabulate
+
 
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
@@ -210,15 +212,14 @@ def display_data(df):
     start = 0
     end = 5
     display_raw_data = input("Would you like to see 5 lines of raw data? (yes or no)").lower()
-
+    
+    i = 0
     while True:
-        if display_raw_data == "yes":
-            print(df.iloc[start:end])
-            start += 5
-            end += 5
-            display_raw_data = input("Would you like to see more raw data? (yes or no)").lower()
-        else:
+        display_data = input('\nWould you like to see 5 lines of raw data? Enter yes or no.\n')
+        if display_data.lower() != 'yes':
             break
+        print(tabulate(df_default.iloc[np.arange(0+i,5+i)], headers ="keys"))
+        i += 5
 
 def main():
     while True:
