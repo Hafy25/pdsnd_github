@@ -6,7 +6,33 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
-def get_filters():
+def check_data_entry(prompt, valid_entries): 
+    """
+    Asks user to type some input and verify if the entry typed is valid.
+    Since we have 3 inputs to ask the user in get_filters(), it is easier to write a function.
+    Args:
+        (str) prompt - message to display to the user
+        (list) valid_entries - list of string that should be accepted 
+    Returns:
+        (str) user_input - the user's valid input
+    """
+    try:
+        user_input = str(input(prompt)).lower()
+
+        while user_input not in valid_entries : 
+            print('Sorry... it seems like you\'re not typing a correct entry.')
+            print('Let\'s try again!')
+            user_input = str(input(prompt)).lower()
+
+        print('Great! the chosen entry is: {}\n'.format(user_input))
+        return user_input
+
+    except:
+        print('Seems like there is an issue with your input')
+
+
+
+def get_filters(): 
     """
     Asks user to specify a city, month, and day to analyze.
 
@@ -15,34 +41,28 @@ def get_filters():
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
-    print('Hello! Let\'s explore some US bikeshare data!')
-    while True:
-        city = input("Please enter a city (Chicago, New York City, or Washington): ")
-        if city.lower() in CITY_DATA.keys():
-            break
-        else:
-            print("Invalid input. Please enter one of the three cities specified.")
+
+    print('Hi there! Let\'s explore some US bikeshare data!')
+
+    # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
+    valid_cities = CITY_DATA.keys()
+    prompt_cities = 'Please choose one of the 3 cities (chicago, new york city, washington): '
+    city = check_data_entry(prompt_cities, valid_cities)
 
 
-    while True:
-        month = input("Please enter a month (January, February, March, April, May, June), or type 'all' for all months: ")
-        if month.lower() in ['january', 'february', 'march', 'april', 'may', 'june', 'all']:
-            break
-        else:
-            print("Invalid input. Please enter a valid month or 'all'.")
+    # get user input for month (all, january, february, ... , june)
+    valid_months = ['all','january','february','march','april','may','june']
+    prompt_month = 'Please choose a month (all, january, february, ... , june): '
+    month = check_data_entry(prompt_month, valid_months)
 
-
-
-    while True:
-        day = input("Please enter a day of the week (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), or type 'all' for all days: ")
-        if day.lower() in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']:
-            break
-        else:
-            print("Invalid input. Please enter a valid day of the week or 'all'.")
+    # get user input for day of week (all, monday, tuesday, ... sunday)
+    valid_days = ['all','monday','tuesday','wednesday','thursday','friday','saturday', 'sunday']
+    prompt_day = 'Please choose a day (all, monday, tuesday, ... sunday): '
+    day = check_data_entry(prompt_day, valid_days)
 
 
     print('-'*40)
-    return city.lower(), month.lower(), day.lower()
+    return city, month, day
 
 
 def load_data(city, month, day):
